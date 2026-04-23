@@ -1,78 +1,81 @@
-# ✦ CyberNova Waybar — Hyprland Setup Guide
+# xstream dotfiles
 
-## File Locations
-```
-~/.config/waybar/config          ← Main waybar configuration
-~/.config/waybar/style.css       ← Theme & styling
-~/.config/hypr/hyprland.conf     ← Add the animation block from hyprland-animations.conf
-```
+Arch Linux + Hyprland setup. Clone and run `install.sh` to restore everything.
 
-## Required Packages (Install with pacman / yay)
+## Setup overview
 
+| Component | Tool |
+|-----------|------|
+| WM | Hyprland |
+| Bar | Waybar |
+| Launcher | Wofi |
+| Terminal | Kitty |
+| Editor | Neovim |
+| Shell | Zsh + Oh My Zsh + Powerlevel10k |
+| Notifications | Mako |
+| Clipboard | cliphist + wl-clipboard |
+| Bluetooth | Blueman |
+| File manager | Yazi |
+| Screenshots | Grimblast |
+| Display manager | SDDM |
+
+---
+
+## Fresh install steps
+
+### 1. Install yay
 ```bash
-# Core
-sudo pacman -S waybar hyprland
-
-# Nerd Fonts (for ALL icons to display correctly)
-yay -S ttf-jetbrains-mono-nerd nerd-fonts-symbols-only
-# OR install the complete nerd fonts meta:
-yay -S nerd-fonts
-
-# Screenshot
-yay -S grimblast-git          # grimblast --notify copy area
-
-# Screen Lock
-sudo pacman -S hyprlock        # or: yay -S swaylock-effects-git
-
-# Network Manager GUI
-sudo pacman -S network-manager-applet nm-connection-editor
-
-# Bluetooth Manager
-sudo pacman -S blueman
-
-# Taskbar icon theme
-sudo pacman -S papirus-icon-theme
+sudo pacman -S --needed git base-devel
+git clone https://aur.archlinux.org/yay.git
+cd yay && makepkg -si
 ```
 
-## Quick Install
+### 2. Install all packages
 ```bash
-mkdir -p ~/.config/waybar
-cp config    ~/.config/waybar/config
-cp style.css ~/.config/waybar/style.css
-
-# Restart waybar
-pkill waybar && waybar &
+yay -S --needed - < packages.txt
 ```
 
-## Module Guide
-
-| Module            | Left-click         | Middle-click  | Right-click         | Scroll     |
-|-------------------|--------------------|---------------|---------------------|------------|
-| Workspaces        | Switch workspace   | —             | —                   | Navigate ± |
-| Clock             | Toggle date/time   | —             | Calendar mode       | Month nav  |
-| Taskbar icon      | Focus/raise window | Close app     | Close app           | —          |
-| Network           | nm-connection-editor | —           | nmtui in terminal   | —          |
-| Bluetooth         | blueman-manager    | —             | rfkill toggle       | —          |
-| Battery           | Toggle info        | —             | —                   | —          |
-| Screenshot        | Area screenshot    | Window shot   | Full screen shot    | —          |
-| Lock              | Lock screen (hyprlock) | —        | —                   | —          |
-| Restart           | systemctl reboot   | —             | —                   | —          |
-| Power Off         | systemctl poweroff | —             | —                   | —          |
-
-## Timezone
-The clock is set to `Asia/Kolkata` (IST). To change:
-- Edit `"timezone"` in the `clock` module in `config`
-
-## Troubleshooting Icons
-If icons show as boxes/question marks:
+### 3. Install Oh My Zsh
 ```bash
-fc-cache -fv
-# Then restart waybar
-pkill waybar && waybar &
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ```
 
-## Customising Accent Colors
-Edit these lines at the top of `style.css`:
-- Active workspace glow: `rgba(99, 102, 241, ...)` — change to your preferred color
-- Clock gradient: `linear-gradient(90deg, #818cf8 ...` — swap hex values
-- Border accents: `.modules-left`, `.modules-center`, `.modules-right` border colors
+### 4. Install Powerlevel10k
+```bash
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \
+  ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+```
+
+### 5. Clone and apply dotfiles
+```bash
+git clone https://github.com/YOUR_USERNAME/dotfiles.git ~/dotfiles
+cd ~/dotfiles && bash install.sh
+```
+
+### 6. Start services
+```bash
+systemctl enable --now bluetooth NetworkManager
+systemctl enable sddm
+chsh -s $(which zsh)
+```
+
+---
+
+## What install.sh copies
+
+| Source | Destination |
+|--------|-------------|
+| hypr/ | ~/.config/hypr/ |
+| waybar/ | ~/.config/waybar/ |
+| wofi/ | ~/.config/wofi/ |
+| kitty/ | ~/.config/kitty/ |
+| nvim/ | ~/.config/nvim/ |
+| zshrc | ~/.zshrc |
+| .p10k.zsh | ~/.p10k.zsh |
+
+---
+
+## Notes
+- Neovim plugins auto-install on first launch via lazy.nvim
+- Fonts needed: ttf-jetbrains-mono-nerd, ttf-meslo-nerd
+- Icons: papirus-icon-theme
