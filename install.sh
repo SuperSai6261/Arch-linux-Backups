@@ -46,5 +46,11 @@ fi
 echo "✓ zsh plugins"
 
 echo ""
+
+# SDDM theme
+sudo mkdir -p /etc/sddm.conf.d
+sudo cp "$DOTFILES/sddm.conf" /etc/sddm.conf.d/sddm.conf
+echo "✓ sddm"
+
 echo "Done! Reboot or restart Hyprland to apply changes."
 echo "Neovim plugins will auto-install on first launch."
