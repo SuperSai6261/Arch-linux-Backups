@@ -1,7 +1,6 @@
 -- ============================================================
 --  LSP Configuration
---  mason.nvim + nvim-lspconfig + nvim-cmp
---  Servers: clangd, jdtls, pyright, bashls, lua_ls
+--  mason.nvim + nvim 0.11+ native vim.lsp.config
 -- ============================================================
 return {
   -- Mason: LSP/DAP/Linter installer
@@ -10,8 +9,8 @@ return {
     cmd  = "Mason",
     opts = {
       ui = {
-        border  = "rounded",
-        icons   = {
+        border = "rounded",
+        icons  = {
           package_installed   = "✓",
           package_pending     = "➜",
           package_uninstalled = "✗",
@@ -26,17 +25,17 @@ return {
     dependencies = { "williamboman/mason.nvim" },
     opts = {
       ensure_installed = {
-        "clangd",       -- C / C++
-        "jdtls",        -- Java  (jdtls has its own setup below)
-        "pyright",      -- Python
-        "bashls",       -- Bash / Shell
-        "lua_ls",       -- Lua (for editing this config!)
+        "clangd",
+        "jdtls",
+        "pyright",
+        "bashls",
+        "lua_ls",
       },
       automatic_installation = true,
     },
   },
 
-  -- nvim-lspconfig
+  -- nvim-lspconfig (kept for mason-lspconfig compatibility)
   {
     "neovim/nvim-lspconfig",
     event        = { "BufReadPre", "BufNewFile" },
@@ -44,7 +43,6 @@ return {
       "williamboman/mason.nvim",
       "williamboman/mason-lspconfig.nvim",
       "hrsh7th/cmp-nvim-lsp",
-      { "folke/neodev.nvim", opts = {} }, -- lua_ls aware of nvim API
     },
     config = function()
       require("lsp")
