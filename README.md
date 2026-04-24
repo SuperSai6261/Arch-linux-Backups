@@ -1,9 +1,7 @@
 # xstream dotfiles
-
 Arch Linux + Hyprland setup. Clone and run `install.sh` to restore everything.
 
 ## Setup overview
-
 | Component | Tool |
 |-----------|------|
 | WM | Hyprland |
@@ -18,6 +16,13 @@ Arch Linux + Hyprland setup. Clone and run `install.sh` to restore everything.
 | File manager | Yazi |
 | Screenshots | Grimblast |
 | Display manager | SDDM |
+| System monitor | Btop |
+| Fetch | Fastfetch |
+| PDF viewer | Zathura |
+| Image viewer | Imv |
+| Video player | Mpv |
+| Power management | TLP |
+| Cursor | Rose Pine Hyprcursor |
 
 ---
 
@@ -48,34 +53,57 @@ git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \
 
 ### 5. Clone and apply dotfiles
 ```bash
-git clone https://github.com/YOUR_USERNAME/dotfiles.git ~/dotfiles
+git clone https://github.com/SuperSai6261/Arch-linux-Backups.git ~/dotfiles
 cd ~/dotfiles && bash install.sh
 ```
 
-### 6. Start services
+### 6. Install TLP power management
 ```bash
-systemctl enable --now bluetooth NetworkManager
+sudo pacman -S tlp tlp-rdw
+sudo systemctl enable --now tlp
+sudo cp ~/dotfiles/tlp.conf /etc/tlp.conf
+sudo systemctl restart tlp
+```
+
+### 7. Install cursor theme
+```bash
+yay -S rose-pine-hyprcursor
+```
+
+### 8. Install additional tools
+```bash
+sudo pacman -S zathura zathura-pdf-mupdf imv mpv brightnessctl
+```
+
+### 9. Start services
+```bash
+systemctl enable --now bluetooth NetworkManager tlp
 systemctl enable sddm
 chsh -s $(which zsh)
 ```
 
 ---
 
-## What install.sh copies
-
+## What install.sh symlinks
 | Source | Destination |
 |--------|-------------|
-| hypr/ | ~/.config/hypr/ |
-| waybar/ | ~/.config/waybar/ |
-| wofi/ | ~/.config/wofi/ |
-| kitty/ | ~/.config/kitty/ |
-| nvim/ | ~/.config/nvim/ |
+| hypr/ | ~/.config/hypr |
+| waybar/ | ~/.config/waybar |
+| wofi/ | ~/.config/wofi |
+| kitty/ | ~/.config/kitty |
+| nvim/ | ~/.config/nvim |
+| mako/config | ~/.config/mako/config |
+| btop/btop.conf | ~/.config/btop/btop.conf |
+| fastfetch/ | ~/.config/fastfetch |
+| yazi/opener.toml | ~/.config/yazi/opener.toml |
 | zshrc | ~/.zshrc |
-| .p10k.zsh | ~/.p10k.zsh |
 
 ---
 
 ## Notes
 - Neovim plugins auto-install on first launch via lazy.nvim
+- Neovim uses nvim 0.11+ native vim.lsp.config (no lspconfig dependency)
 - Fonts needed: ttf-jetbrains-mono-nerd, ttf-meslo-nerd
 - Icons: papirus-icon-theme
+- TLP config stored in dotfiles/tlp.conf — copy to /etc/tlp.conf on restore
+- Battery charge thresholds set to 75-80% for longevity
