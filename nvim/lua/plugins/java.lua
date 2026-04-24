@@ -38,7 +38,7 @@ return {
 					"-Dosgi.bundles.defaultStartLevel=4",
 					"-Declipse.product=org.eclipse.jdt.ls.core.product",
 					"-Dlog.protocol=true",
-					"-Dlog.level=ALL",
+					"-Dlog.level=ERROR",
 					"-Xms256m",
 					"-Xmx1g",
 					"--add-modules=ALL-SYSTEM",
