@@ -62,7 +62,7 @@ cd ~/dotfiles && bash install.sh
 sudo pacman -S tlp tlp-rdw
 sudo systemctl enable --now tlp
 sudo cp ~/dotfiles/tlp.conf /etc/tlp.conf
-sudo systemctl restart tlp
+sudo systemctl start tlp
 ```
 
 ### 7. Install cursor theme
