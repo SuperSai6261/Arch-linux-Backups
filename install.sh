@@ -3,54 +3,65 @@ set -e
 DOTFILES="$(cd "$(dirname "$0")" && pwd)"
 echo "Installing dotfiles from $DOTFILES..."
 
-backup() {
-  [ -e "$1" ] && [ ! -L "$1" ] && mv "$1" "$1.bak.$(date +%s)" && echo "  backed up: $1"
+# Helper: remove existing and create symlink
+link() {
+  local src="$1"
+  local dst="$2"
+  mkdir -p "$(dirname "$dst")"
+  [ -e "$dst" ] && [ ! -L "$dst" ] && mv "$dst" "$dst.bak.$(date +%s)" && echo "  backed up: $dst"
+  [ -L "$dst" ] && rm "$dst"
+  ln -s "$src" "$dst"
 }
 
-mkdir -p ~/.config/hypr
-backup ~/.config/hypr/hyprland.conf
-backup ~/.config/hypr/hyprland-animations.conf
-cp "$DOTFILES/hypr/hyprland.conf" ~/.config/hypr/
-cp "$DOTFILES/hypr/hyprland-animations.conf" ~/.config/hypr/
+# ── Configs ──────────────────────────────────────────────────
+link "$DOTFILES/hypr"            ~/.config/hypr
 echo "✓ hypr"
 
-mkdir -p ~/.config/waybar
-cp "$DOTFILES/waybar/config.jsonc" ~/.config/waybar/
-cp "$DOTFILES/waybar/style.css" ~/.config/waybar/
+link "$DOTFILES/waybar"          ~/.config/waybar
 echo "✓ waybar"
 
-mkdir -p ~/.config/wofi
-cp "$DOTFILES/wofi/config" ~/.config/wofi/
-cp "$DOTFILES/wofi/style.css" ~/.config/wofi/
+link "$DOTFILES/wofi"            ~/.config/wofi
 echo "✓ wofi"
 
-mkdir -p ~/.config/kitty
-cp "$DOTFILES/kitty/kitty.conf" ~/.config/kitty/
+link "$DOTFILES/kitty"           ~/.config/kitty
 echo "✓ kitty"
 
-mkdir -p ~/.config/nvim
-cp -r "$DOTFILES/nvim/"* ~/.config/nvim/
+link "$DOTFILES/nvim"            ~/.config/nvim
 echo "✓ nvim"
 
-cp "$DOTFILES/zshrc" ~/.zshrc
-[ -f "$DOTFILES/.p10k.zsh" ] && cp "$DOTFILES/.p10k.zsh" ~/.p10k.zsh
+link "$DOTFILES/mako/config"     ~/.config/mako/config
+echo "✓ mako"
+
+link "$DOTFILES/btop/btop.conf"  ~/.config/btop/btop.conf
+echo "✓ btop"
+
+link "$DOTFILES/fastfetch"       ~/.config/fastfetch
+echo "✓ fastfetch"
+
+link "$DOTFILES/yazi/opener.toml" ~/.config/yazi/opener.toml
+echo "✓ yazi"
+
+link "$DOTFILES/zshrc"           ~/.zshrc
+[ -f "$DOTFILES/.p10k.zsh" ] && link "$DOTFILES/.p10k.zsh" ~/.p10k.zsh
 echo "✓ zsh"
 
-# Install zsh plugins
+# ── Zsh plugins ───────────────────────────────────────────────
 if [ ! -d "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions" ]; then
-  git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+  git clone https://github.com/zsh-users/zsh-autosuggestions \
+    ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 fi
 if [ ! -d "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting" ]; then
-  git clone https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+  git clone https://github.com/zsh-users/zsh-syntax-highlighting \
+    ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 fi
 echo "✓ zsh plugins"
 
-echo ""
-
-# SDDM theme
+# ── SDDM ─────────────────────────────────────────────────────
 sudo mkdir -p /etc/sddm.conf.d
 sudo cp "$DOTFILES/sddm.conf" /etc/sddm.conf.d/sddm.conf
 echo "✓ sddm"
 
-echo "Done! Reboot or restart Hyprland to apply changes."
+echo ""
+echo "✅ Done! All configs symlinked."
+echo "Reboot or restart Hyprland to apply changes."
 echo "Neovim plugins will auto-install on first launch."
