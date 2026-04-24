@@ -140,3 +140,10 @@ export VISUAL=nvim
 
 # ── Zsh as Neovim shell ─────────────────────────
 export SHELL=/bin/zsh
+
+# ── Network (nmcli) ─────────────────────────────
+alias wifi='nmcli device wifi list'
+alias wifion='nmcli radio wifi on'
+alias wifioff='nmcli radio wifi off'
+alias netstat='nmcli connection show --active'
+wificonnect() { nmcli device wifi connect "$1" password "$2"; }
