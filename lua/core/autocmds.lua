@@ -102,3 +102,10 @@ autocmd("FileType", {
 
 -- ── Auto-format on save (via conform.nvim) ───────────────────
 -- Actual formatting is handled in plugins/formatting.lua
+
+-- ── Redraw on focus (fixes Hyprland screen glitch) ──────────
+augroup("FocusRedraw", { clear = true })
+autocmd({ "FocusGained", "BufEnter", "CursorHold" }, {
+  group    = "FocusRedraw",
+  callback = function() vim.cmd("redraw!") end,
+})
