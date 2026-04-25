@@ -1,0 +1,36 @@
+# === Behavior ===
+default-timeout=5000
+ignore-timeout=0
+
+# === Layout & Position ===
+anchor=top-right
+margin=12
+padding=14,18
+width=360
+border-size=2
+border-radius=12
+
+# === Colors ===
+background-color=#1e1e2eee
+text-color=#cdd6f4
+border-color=#89b4fa
+progress-color=over #313244
+
+# === Font ===
+font=JetBrainsMono Nerd Font 11
+
+# === Icons ===
+max-icon-size=48
+
+# === Urgency overrides ===
+[urgency=low]
+border-color=#a6e3a1
+default-timeout=3000
+
+[urgency=normal]
+border-color=#89b4fa
+default-timeout=5000
+
+[urgency=critical]
+border-color=#f38ba8
+default-timeout=0
