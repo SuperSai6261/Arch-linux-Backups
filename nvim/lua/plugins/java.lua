@@ -129,7 +129,7 @@ return {
 					map("<leader>ju", "<cmd>JdtUpdateConfig<CR>", "Update jdtls config")
 
 					-- Inlay hints
-					if client.supports_method("textDocument/inlayHint") then
+					if client:supports_method("textDocument/inlayHint") then
 						vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
 					end
 

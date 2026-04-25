@@ -144,7 +144,7 @@ return {
 			},
 			filesystem = {
 				follow_current_file = { enabled = true },
-				use_libuv_file_watcher = true,
+				use_libuv_file_watcher = false,
 				filtered_items = {
 					visible = false,
 					hide_dotfiles = false,

@@ -14,34 +14,34 @@ link() {
 }
 
 # ── Configs ──────────────────────────────────────────────────
-link "$DOTFILES/hypr" ~/.config/hypr
+link "$DOTFILES/hypr"            ~/.config/hypr
 echo "✓ hypr"
 
-link "$DOTFILES/waybar" ~/.config/waybar
+link "$DOTFILES/waybar"          ~/.config/waybar
 echo "✓ waybar"
 
-link "$DOTFILES/wofi" ~/.config/wofi
+link "$DOTFILES/wofi"            ~/.config/wofi
 echo "✓ wofi"
 
-link "$DOTFILES/kitty" ~/.config/kitty
+link "$DOTFILES/kitty"           ~/.config/kitty
 echo "✓ kitty"
 
-link "$DOTFILES/nvim/nvim" ~/.config/nvim
+link "$DOTFILES/nvim"            ~/.config/nvim
 echo "✓ nvim"
 
-link "$DOTFILES/mako/config" ~/.config/mako/config
+link "$DOTFILES/mako/config"     ~/.config/mako/config
 echo "✓ mako"
 
-link "$DOTFILES/btop/btop.conf" ~/.config/btop/btop.conf
+link "$DOTFILES/btop/btop.conf"  ~/.config/btop/btop.conf
 echo "✓ btop"
 
-link "$DOTFILES/fastfetch" ~/.config/fastfetch
+link "$DOTFILES/fastfetch"       ~/.config/fastfetch
 echo "✓ fastfetch"
 
 link "$DOTFILES/yazi/opener.toml" ~/.config/yazi/opener.toml
 echo "✓ yazi"
 
-link "$DOTFILES/zshrc" ~/.zshrc
+link "$DOTFILES/zshrc"           ~/.zshrc
 [ -f "$DOTFILES/.p10k.zsh" ] && link "$DOTFILES/.p10k.zsh" ~/.p10k.zsh
 echo "✓ zsh"
 
