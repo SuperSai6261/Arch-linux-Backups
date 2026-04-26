@@ -26,7 +26,7 @@ echo "✓ wofi"
 link "$DOTFILES/kitty" ~/.config/kitty
 echo "✓ kitty"
 
-link "$DOTFILES/nvim/nvim" ~/.config/nvim
+link "$DOTFILES/nvim" ~/.config/nvim
 echo "✓ nvim"
 
 link "$DOTFILES/mako/config" ~/.config/mako/config
