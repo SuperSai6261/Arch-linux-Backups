@@ -29,7 +29,7 @@ echo "✓ kitty"
 link "$DOTFILES/nvim" ~/.config/nvim
 echo "✓ nvim"
 
-link "$DOTFILES/mako" ~/.config
+link "$DOTFILES/mako" ~/.config/mako
 echo "✓ mako"
 
 link "$DOTFILES/btop" ~/.config/btop
