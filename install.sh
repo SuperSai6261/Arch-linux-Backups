@@ -29,17 +29,20 @@ echo "✓ kitty"
 link "$DOTFILES/nvim" ~/.config/nvim
 echo "✓ nvim"
 
-link "$DOTFILES/mako/config" ~/.config/mako/config
+link "$DOTFILES/mako" ~/.config
 echo "✓ mako"
 
-link "$DOTFILES/btop/btop.conf" ~/.config/btop/btop.conf
+link "$DOTFILES/btop" ~/.config/btop
 echo "✓ btop"
 
 link "$DOTFILES/fastfetch" ~/.config/fastfetch
 echo "✓ fastfetch"
 
-link "$DOTFILES/yazi/opener.toml" ~/.config/yazi/opener.toml
+link "$DOTFILES/yazi" ~/.config/yazi
 echo "✓ yazi"
+
+link "$DOTFILES/gtk-3.0" ~/.config/gtk-3.0
+echo "✓ gtk-3.0"
 
 link "$DOTFILES/zshrc" ~/.zshrc
 [ -f "$DOTFILES/.p10k.zsh" ] && link "$DOTFILES/.p10k.zsh" ~/.p10k.zsh
