@@ -4,16 +4,16 @@
     "source": "arch",
     "color": {
       "1": "magenta",
-      "2": "cyan"
-    }
+      "2": "cyan",
+    },
   },
   "display": {
     "separator": " → ",
     "color": {
       "keys": "magenta",
       "title": "cyan",
-      "output": "green"
-    }
+      "output": "green",
+    },
   },
   "modules": [
     {
@@ -21,71 +21,71 @@
       "color": {
         "user": "bright_magenta",
         "at": "bright_cyan",
-        "host": "bright_green"
-      }
+        "host": "bright_green",
+      },
     },
     "separator",
     {
       "type": "os",
       "key": " OS",
-      "keyColor": "magenta"
+      "keyColor": "magenta",
     },
     {
       "type": "kernel",
       "key": " Kernel",
-      "keyColor": "cyan"
+      "keyColor": "cyan",
     },
     {
       "type": "uptime",
       "key": " Uptime",
-      "keyColor": "green"
+      "keyColor": "green",
     },
     {
       "type": "packages",
       "key": " Packages",
-      "keyColor": "yellow"
+      "keyColor": "yellow",
     },
     {
       "type": "shell",
       "key": " Shell",
-      "keyColor": "magenta"
+      "keyColor": "magenta",
     },
     {
       "type": "wm",
       "key": " WM",
-      "keyColor": "cyan"
+      "keyColor": "cyan",
     },
     {
       "type": "terminal",
       "key": " Terminal",
-      "keyColor": "green"
+      "keyColor": "green",
     },
     {
       "type": "cpu",
       "key": " CPU",
-      "keyColor": "yellow"
+      "keyColor": "yellow",
     },
     {
       "type": "gpu",
       "key": " GPU",
-      "keyColor": "magenta"
+      "keyColor": "magenta",
     },
     {
       "type": "memory",
       "key": "󰍛 Memory",
-      "keyColor": "cyan"
+      "keyColor": "cyan",
     },
     {
       "type": "disk",
       "key": " Disk",
-      "keyColor": "green"
+      "keyColor": "green",
     },
     {
       "type": "battery",
       "key": " Battery",
-      "keyColor": "yellow"
+      "keyColor": "yellow",
     },
     "break",
-    "colors"
-  ]
+    "colors",
+  ],
 }
