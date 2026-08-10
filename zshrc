@@ -1,7 +1,161 @@
-# Fastfetch on shell start
+# ══════════════════════════════════════════════════════════════
+# Fastfetch on shell start (disabled)
+# ══════════════════════════════════════════════════════════════
 fastfetch
 
+# ══════════════════════════════════════════════════════════════
+# Oh My Zsh
+# ══════════════════════════════════════════════════════════════
+export ZSH="$HOME/.oh-my-zsh"
+ZSH_THEME=""
+plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
+source $ZSH/oh-my-zsh.sh
 
+# Keep fastfetch after clear
+ alias clear='clear && fastfetch'
+
+# ══════════════════════════════════════════════════════════════
+# Wayland / Hyprland
+# ══════════════════════════════════════════════════════════════
+export WAYLAND_DISPLAY=wayland-1
+export XDG_SESSION_TYPE=wayland
+export QT_QPA_PLATFORM=wayland
+export GDK_BACKEND=wayland
+export XDG_RUNTIME_DIR=/run/user/$(id -u)
+
+# ══════════════════════════════════════════════════════════════
+# Java
+# ══════════════════════════════════════════════════════════════
+export JAVA_HOME=/usr/lib/jvm/java-21-openjdk
+export PATH=$JAVA_HOME/bin:$PATH
+
+# ══════════════════════════════════════════════════════════════
+# PATH additions
+# ══════════════════════════════════════════════════════════════
+export PATH=$HOME/.local/bin:$PATH   # python tools: black, isort, flake8
+export PATH="$HOME/.cargo/bin:$PATH" # rust/cargo
+
+# ══════════════════════════════════════════════════════════════
+# Editor / Shell
+# ══════════════════════════════════════════════════════════════
+export EDITOR=nvim
+export VISUAL=nvim
+export SHELL=/bin/zsh
+
+# ══════════════════════════════════════════════════════════════
+# Network (nmcli)
+# ══════════════════════════════════════════════════════════════
+alias wifi='nmcli device wifi list'
+alias wifion='nmcli radio wifi on'
+alias wifioff='nmcli radio wifi off'
+alias netstat='nmcli connection show --active'
+wificonnect() { nmcli device wifi connect "$1" password "$2"; }
+alias warp-on='warp-cli connect'
+alias warp-off='warp-cli disconnect'
+
+# ══════════════════════════════════════════════════════════════
+# Zsh syntax / autosuggest colors (neon theme)
+# ══════════════════════════════════════════════════════════════
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#FF0000,bold"
+
+ZSH_HIGHLIGHT_STYLES[command]='fg=#39FF14,bold,underline'
+ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=#FF0000,bold'
+ZSH_HIGHLIGHT_STYLES[string]='fg=#A6E3A1'
+ZSH_HIGHLIGHT_STYLES[path]='fg=#94E2D5,underline'
+ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=#CBA6F7'
+ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=#CBA6F7'
+ZSH_HIGHLIGHT_STYLES[numeric-literal]='fg=#FAB387'
+ZSH_HIGHLIGHT_STYLES[comment]='fg=#6C7086,italic'
+ZSH_HIGHLIGHT_STYLES[builtin]='fg=#39FF14,bold,underline'
+ZSH_HIGHLIGHT_STYLES[alias]='fg=#39FF14,bold,underline'
+
+# ══════════════════════════════════════════════════════════════
+# Xstream CP shortcuts
+# ══════════════════════════════════════════════════════════════
+cpush() { git add -A && git commit -m "$1" && git push }
+alias cst="git status"
+alias clog="git log --oneline --graph --decorate -10"
+alias cdiff="git diff"
+
+# ══════════════════════════════════════════════════════════════
+# FZF — neon theme (single source of truth; duplicate block removed)
+# ══════════════════════════════════════════════════════════════
+export FZF_DEFAULT_OPTS="
+  --color=bg:#000000,bg+:#0D0D0D
+  --color=fg:#00FF00,fg+:#39FF14
+  --color=hl:#FF007C,hl+:#FF00FF
+  --color=border:#00FFFF
+  --color=prompt:#FF007C,pointer:#00FFFF,marker:#FFFF00
+  --color=info:#FF00FF,spinner:#00FFFF,header:#FF007C
+  --color=query:#00FFFF,disabled:#444444
+  --border=double
+  --prompt='⚡ '
+  --pointer='▶'
+  --marker='✦'
+  --height=90%
+  --layout=reverse
+  --info=inline
+  --margin=1
+  --padding=1"
+
+source /usr/share/fzf/key-bindings.zsh
+source /usr/share/fzf/completion.zsh
+
+# fzf file search + bat preview
+export FZF_DEFAULT_COMMAND='find . -type f'
+export FZF_CTRL_T_OPTS="
+  --preview 'bat --color=always --style=numbers,changes --line-range=:200 {}'
+  --preview-window=right:60%:wrap"
+export FZF_ALT_C_OPTS="
+  --preview 'ls -la --color=always {}'"
+
+alias fp='fzf --preview "bat --color=always --style=numbers {}"'
+alias fv='fzf --preview "bat --color=always --style=numbers {}" | xargs nvim'
+
+# ══════════════════════════════════════════════════════════════
+# Zoxide (smarter cd)
+# ══════════════════════════════════════════════════════════════
+eval "$(zoxide init zsh)"
+alias cd="z"
+
+# ══════════════════════════════════════════════════════════════
+# Eza (better ls)
+# ══════════════════════════════════════════════════════════════
+alias ls="eza --icons --color=always --group-directories-first"
+alias ll="eza -la --icons --color=always --group-directories-first --git"
+alias lt="eza --tree --icons --color=always --level=2"
+
+# ══════════════════════════════════════════════════════════════
+# Cursor shape fix (block cursor after every prompt)
+# ══════════════════════════════════════════════════════════════
+_fix_cursor() { echo -ne '\e[2 q' }
+precmd_hooks+=(_fix_cursor)
+zle-line-init() { echo -ne '\e[2 q' }
+zle -N zle-line-init
+stty quit undef
+
+# ══════════════════════════════════════════════════════════════
+# Starship prompt
+# ══════════════════════════════════════════════════════════════
+eval "$(starship init zsh)"
+
+# ══════════════════════════════════════════════════════════════
+# Misc
+# ══════════════════════════════════════════════════════════════
+alias bonsai='cbonsai -li -t 0.03 -w 4 -L 32 -M 5 -b 1 -k 46,201,82,51'
+alias webui-stop="docker stop open-webui"
+alias webui-start="docker start open-webui"
+alias webui-status="docker ps -a --filter name=open-webui"
+
+# ══════════════════════════════════════════════════════════════
+# Secrets — do NOT put real keys here (this file lives in the dotfiles repo)
+# Export real values only in ~/.zshrc directly, or source a gitignored .env
+# ══════════════════════════════════════════════════════════════
+# export GEMINI_API_KEY="..."   # <-- set this in ~/.zshrc, not here
+
+# ══════════════════════════════════════════════════════════════
+# Cache cleanup helper
+# ══════════════════════════════════════════════════════════════
 cleanup() {
   echo "Cleaning Discord..."
   rm -rf ~/.config/discord/{Cache,"Code Cache",GPUCache,logs,sentry,DawnWebGPUCache,DawnGraphiteCache}
@@ -27,252 +181,3 @@ cleanup() {
 
   echo "Done."
 }
-
-# Enable Powerlevel10k instant prompt...
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-# if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-#   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-# fi
-
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
-
-# Path to your Oh My Zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
-
-# Keep fastfetch after clear
-alias clear='clear && fastfetch'
-
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time Oh My Zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME=""
-
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in $ZSH/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
-
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
-
-# Uncomment one of the following lines to change the auto-update behavior
-# zstyle ':omz:update' mode disabled  # disable automatic updates
-# zstyle ':omz:update' mode auto      # update automatically without asking
-# zstyle ':omz:update' mode reminder  # just remind me to update when it's time
-
-# Uncomment the following line to change how often to auto-update (in days).
-# zstyle ':omz:update' frequency 13
-
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS="true"
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# You can also set it to another string to have that shown instead of the default red dots.
-# e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
-# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
-
-source $ZSH/oh-my-zsh.sh
-
-# User configuration
-
-# export MANPATH="/usr/local/man:$MANPATH"
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='nvim'
-# fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch $(uname -m)"
-
-# Set personal aliases, overriding those provided by Oh My Zsh libs,
-# plugins, and themes. Aliases can be placed here, though Oh My Zsh
-# users are encouraged to define aliases within a top-level file in
-# the $ZSH_CUSTOM folder, with .zsh extension. Examples:
-# - $ZSH_CUSTOM/aliases.zsh
-# - $ZSH_CUSTOM/macos.zsh
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-
-# # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-# [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-# ── Wayland / Hyprland ──────────────────────────
-export WAYLAND_DISPLAY=wayland-1
-export XDG_SESSION_TYPE=wayland
-export QT_QPA_PLATFORM=wayland
-export GDK_BACKEND=wayland
-export XDG_RUNTIME_DIR=/run/user/$(id -u)
-
-# ── Java ────────────────────────────────────────
-export JAVA_HOME=/usr/lib/jvm/java-21-openjdk
-export PATH=$JAVA_HOME/bin:$PATH
-
-# ── Python local bin (black, isort, flake8) ─────
-export PATH=$HOME/.local/bin:$PATH
-
-# ── Neovim as default editor ────────────────────
-export EDITOR=nvim
-export VISUAL=nvim
-
-# ── Zsh as Neovim shell ─────────────────────────
-export SHELL=/bin/zsh
-
-# ── Network (nmcli) ─────────────────────────────
-alias wifi='nmcli device wifi list'
-alias wifion='nmcli radio wifi on'
-alias wifioff='nmcli radio wifi off'
-alias netstat='nmcli connection show --active'
-wificonnect() { nmcli device wifi connect "$1" password "$2"; }
-
-# ── Zsh Colors ──────────────────────────────────
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#FF0000,bold"
-
-ZSH_HIGHLIGHT_STYLES[command]='fg=#39FF14,bold,underline'
-ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=#FF0000,bold'
-ZSH_HIGHLIGHT_STYLES[string]='fg=#A6E3A1'
-ZSH_HIGHLIGHT_STYLES[path]='fg=#94E2D5,underline'
-ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=#CBA6F7'
-ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=#CBA6F7'
-ZSH_HIGHLIGHT_STYLES[numeric-literal]='fg=#FAB387'
-ZSH_HIGHLIGHT_STYLES[comment]='fg=#6C7086,italic'
-alias warp-on='warp-cli connect'
-alias warp-off='warp-cli disconnect'
-
-# ── Xstream CP ──────────────────────────────────
-cpush() { git add -A && git commit -m "$1" && git push }
-alias cst="git status"
-alias clog="git log --oneline --graph --decorate -10"
-alias cdiff="git diff"
-
-# ── FZF neon theme ───────────────────────────────────────────
-export FZF_DEFAULT_OPTS="
-  --color=bg:#000000,bg+:#0a0a0a
-  --color=fg:#00FF00,fg+:#39FF14
-  --color=hl:#FF007C,hl+:#FF3399
-  --color=border:#00FFFF
-  --color=prompt:#FF007C,pointer:#00FFFF,marker:#FFFF00
-  --color=info:#FFFF00,spinner:#00FF00,header:#00FFFF
-  --border=rounded
-  --prompt='  '
-  --pointer='▶'
-  --marker='✓'
-  --height=80%
-  --layout=reverse
-  --info=inline"
-
-# fzf keybinds + completion
-source /usr/share/fzf/key-bindings.zsh
-source /usr/share/fzf/completion.zsh
-
-# ── FZF CRAZY NEON ───────────────────────────────────────────
-export FZF_DEFAULT_OPTS="
-  --color=bg:#000000,bg+:#0D0D0D
-  --color=fg:#00FF00,fg+:#39FF14
-  --color=hl:#FF007C,hl+:#FF00FF
-  --color=border:#00FFFF
-  --color=prompt:#FF007C,pointer:#00FFFF,marker:#FFFF00
-  --color=info:#FF00FF,spinner:#00FFFF,header:#FF007C
-  --color=query:#00FFFF,disabled:#444444
-  --border=double
-  --prompt='⚡ '
-  --pointer='▶'
-  --marker='✦'
-  --height=90%
-  --layout=reverse
-  --info=inline
-  --margin=1
-  --padding=1"
-
-source /usr/share/fzf/key-bindings.zsh
-source /usr/share/fzf/completion.zsh
-
-# ── FZF file preview with bat ─────────────────────────────────
-export FZF_DEFAULT_COMMAND='find . -type f'
-export FZF_CTRL_T_OPTS="
-  --preview 'bat --color=always --style=numbers,changes --line-range=:200 {}'
-  --preview-window=right:60%:wrap"
-
-export FZF_ALT_C_OPTS="
-  --preview 'ls -la --color=always {}'"
-
-# ── Zoxide (smarter cd) ───────────────────────────────────────
-eval "$(zoxide init zsh)"
-alias cd="z"
-
-# ── Eza (better ls) ───────────────────────────────────────────
-alias ls="eza --icons --color=always --group-directories-first"
-alias ll="eza -la --icons --color=always --group-directories-first --git"
-alias lt="eza --tree --icons --color=always --level=2"
-
-# FZF + BAT preview
-alias fp='fzf --preview "bat --color=always --style=numbers {}"'
-alias fv='fzf --preview "bat --color=always --style=numbers {}" | xargs nvim'
-export PATH="$HOME/.cargo/bin:$PATH"
-
-# Force block cursor after every prompt
-_fix_cursor() { echo -ne '\e[2 q' }
-precmd_hooks+=(_fix_cursor)
-zle-line-init() { echo -ne '\e[2 q' }
-zle -N zle-line-init
-
-ZSH_HIGHLIGHT_STYLES[builtin]='fg=#39FF14,bold,underline'
-ZSH_HIGHLIGHT_STYLES[builtin]='fg=#39FF14,bold,underline'
-ZSH_HIGHLIGHT_STYLES[alias]='fg=#39FF14,bold,underline'
-eval "$(starship init zsh)"
-alias bonsai='cbonsai -li -t 0.03 -w 4 -L 32 -M 5 -b 1 -k 46,201,82,51'
-alias webui-stop="docker stop open-webui"
-alias webui-start="docker start open-webui"
-alias webui-status="docker ps -a --filter name=open-webui"
-stty quit undef
-export GEMINI_API_KEY="GEMINI_API_KEY"
