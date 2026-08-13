@@ -22,7 +22,6 @@ fd
 firefox
 fzf
 git
-grim
 grub
 hypridle
 hyprland
@@ -56,7 +55,6 @@ rofi
 sddm
 shellcheck
 shfmt
-slurp
 sudo
 swaybg
 telegram-desktop
@@ -81,3 +79,4 @@ zathura
 zathura-pdf-mupdf
 zoxide
 zsh
+flameshot
