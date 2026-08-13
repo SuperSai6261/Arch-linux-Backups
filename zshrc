@@ -181,3 +181,4 @@ cleanup() {
 
   echo "Done."
 }
+export PATH=~/.npm-global/bin:$PATH
