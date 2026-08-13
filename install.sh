@@ -32,6 +32,10 @@ if ! command -v yay &>/dev/null; then
 fi
 
 # ── Packages: AUR (yay) ──────────────────────────────────────────
+# NOTE: --noconfirm skips the PKGBUILD review prompt. Given the June 2026
+# "Atomic Arch" AUR supply-chain campaign (orphaned packages hijacked to
+# inject infostealer malware), periodically audit packages-aur.txt by hand
+# and consider reviewing PKGBUILDs (`yay -Gp <pkg>`) before adding new entries.
 if [ -f "$DOTFILES/packages-aur.txt" ]; then
   echo "Installing AUR packages..."
   yay -S --needed --noconfirm - <"$DOTFILES/packages-aur.txt"
@@ -87,10 +91,17 @@ if [ ! -d "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting" ]
 fi
 echo "✓ zsh plugins"
 
-# ── SDDM ─────────────────────────────────────────────────────
-sudo mkdir -p /etc/sddm.conf.d
-sudo cp "$DOTFILES/theme.conf" /etc/sddm.conf.d/theme.conf
-echo "✓ sddm"
+# ── ly (display manager) ────────────────────────────────────────
+# Replaces SDDM. ly is a lightweight TUI display manager — no custom
+# config.ini symlinked here, just installed (via packages-native.txt or
+# packages-aur.txt) and enabled with its default settings.
+if command -v ly &>/dev/null || pacman -Qi ly &>/dev/null; then
+  sudo systemctl disable sddm.service 2>/dev/null || true
+  sudo systemctl enable ly.service
+  echo "✓ ly enabled"
+else
+  echo "⚠ ly not found — add 'ly' to packages-native.txt or packages-aur.txt"
+fi
 
 # ── TLP ──────────────────────────────────────────────────────
 if [ -f "$DOTFILES/tlp.conf" ]; then
@@ -109,10 +120,36 @@ fi
 
 # ── Cargo packages ────────────────────────────────────────────
 if command -v cargo &>/dev/null; then
-  cargo install ttyper
-  echo "✓ ttyper installed"
+  if ! command -v ttyper &>/dev/null; then
+    cargo install ttyper
+    echo "✓ ttyper installed"
+  else
+    echo "✓ ttyper already installed, skipping"
+  fi
 else
   echo "⚠ cargo not found, skipping ttyper install"
+fi
+
+# ── Neovim formatter tooling ────────────────────────────────────
+# LazyVim's conform.nvim needs these binaries on $PATH to actually format.
+echo "Installing Neovim formatter tooling..."
+sudo pacman -S --needed --noconfirm clang stylua jq shfmt
+echo "✓ clang, stylua, jq, shfmt"
+
+pip install --break-system-packages --quiet black
+echo "✓ black"
+
+if ! command -v prettier &>/dev/null; then
+  mkdir -p ~/.npm-global
+  npm config set prefix "$HOME/.npm-global"
+  if ! grep -q '.npm-global/bin' ~/.zshrc 2>/dev/null; then
+    echo 'export PATH=~/.npm-global/bin:$PATH' >>~/.zshrc
+  fi
+  export PATH="$HOME/.npm-global/bin:$PATH"
+  npm install -g prettier
+  echo "✓ prettier"
+else
+  echo "✓ prettier already installed, skipping"
 fi
 
 echo ""
