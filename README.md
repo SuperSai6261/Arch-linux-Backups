@@ -17,7 +17,7 @@ Arch Linux + Hyprland setup. Clone and run install.sh to restore everything — 
 | Bluetooth        | Blueman                                       |
 | File manager     | Yazi                                          |
 | Screenshots      | Flameshot                                     |
-| Display manager  | SDDM                                          |
+| Display manager  | ly                                           |
 | System monitor   | Btop                                          |
 | Fetch            | Fastfetch                                     |
 | PDF viewer       | Zathura                                       |
@@ -73,7 +73,6 @@ This single step now handles:
 - Symlinking every config below
 - Copying `tlp.conf` to `/etc/tlp.conf` and enabling the TLP service
 - Copying `ryzenadj.service` to `/etc/systemd/system/` and enabling it (sets APU power limits — see Notes)
-- Copying the SDDM theme config
 - Installing `ttyper` via cargo (if cargo is available)
 
 ### 4. Install nvim formatter tooling
@@ -112,7 +111,7 @@ spec = {
 
 ```bash
 systemctl enable --now bluetooth NetworkManager
-systemctl enable sddm
+systemctl enable ly
 chsh -s $(which zsh)
 ```
 
@@ -149,7 +148,6 @@ chsh -s $(which zsh)
 | packages-aur.txt    | via `yay -S`                | AUR packages                             |
 | tlp.conf            | /etc/tlp.conf               | battery/power tuning, service enabled    |
 | ryzenadj.service    | /etc/systemd/system/        | APU power limit on boot, service enabled |
-| theme.conf          | /etc/sddm.conf.d/theme.conf | SDDM theme                               |
 
 ---
 
