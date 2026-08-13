@@ -218,7 +218,7 @@
         "on-click":        "flameshot gui",
         "on-click-right":  "flameshot full -p ~/Pictures/Screenshots/",
         "on-click-middle": "flameshot screen -p ~/Pictures/Screenshots/"
-    }
+    },
     // ─── CUSTOM: LOCK ─────────────────────────────────────────────
     "custom/lock": {
         "format": "󰍁",
