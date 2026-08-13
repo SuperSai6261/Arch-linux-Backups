@@ -30,7 +30,7 @@ enabled = false
 
 [opener]
 edit = [
-  { run = 'kitty --start-as=fullscreen nvim "$@"', orphan = true, desc = "nvim" },
+  { run = 'kitty nvim "$@"', orphan = true, desc = "nvim" },
 ]
 view_pdf = [
   { run = 'zathura "$@"', orphan = true, desc = "zathura" },

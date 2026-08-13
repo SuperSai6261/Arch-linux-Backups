@@ -214,13 +214,11 @@
     // ─── CUSTOM: SCREENSHOT ───────────────────────────────────────
     "custom/screenshot": {
         "format": "󰄀",
-        "tooltip": "Left: Area  |  Right: Fullscreen  |  Mid: Window",
-        "on-click":        "slurp | grim -g - ~/Pictures/Screenshots/$(date +%Y%m%d_%H%M%S).png",
-        "on-click-right":  "grim ~/Pictures/Screenshots/$(date +%Y%m%d_%H%M%S).png",
-        "on-click-middle": "grim ~/Pictures/Screenshots/$(date +%Y%m%d_%H%M%S).png"
-
-    },
-
+        "tooltip": "Left: Area  |  Right: Fullscreen  |  Mid: Screen",
+        "on-click":        "flameshot gui",
+        "on-click-right":  "flameshot full -p ~/Pictures/Screenshots/",
+        "on-click-middle": "flameshot screen -p ~/Pictures/Screenshots/"
+    }
     // ─── CUSTOM: LOCK ─────────────────────────────────────────────
     "custom/lock": {
         "format": "󰍁",

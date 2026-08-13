@@ -182,8 +182,7 @@ hl.bind(mainMod .. " + V", hl.dsp.exec_cmd("cliphist list | rofi -dmenu | cliphi
 hl.bind(mainMod .. " + L", hl.dsp.exec_cmd("hyprlock"))
 
 -- Fullscreen (native mode param isn't stable/documented yet, so using hyprctl directly is the safe bet)
-hl.bind(mainMod .. " + Z", hl.dsp.window.fullscreen("fullscreen", "toggle", true))
-
+hl.bind(mainMod .. " + Z", hl.dsp.window.fullscreen({ mode = "fullscreen", action = "toggle" }))
 -- Waybar toggle
 hl.bind(mainMod .. " + B", hl.dsp.exec_cmd("pkill -SIGUSR1 waybar"))
 
@@ -200,10 +199,10 @@ hl.bind(mainMod .. " + SHIFT + up", hl.dsp.window.move({ direction = "up" }))
 hl.bind(mainMod .. " + SHIFT + down", hl.dsp.window.move({ direction = "down" }))
 
 -- Resize window with mainMod + CTRL + arrow keys
-hl.bind(mainMod .. " + CTRL + left", hl.dsp.window.resize({ x = -50, y = 0 }))
-hl.bind(mainMod .. " + CTRL + right", hl.dsp.window.resize({ x = 50, y = 0 }))
-hl.bind(mainMod .. " + CTRL + up", hl.dsp.window.resize({ x = 0, y = -50 }))
-hl.bind(mainMod .. " + CTRL + down", hl.dsp.window.resize({ x = 0, y = 50 }))
+hl.bind(mainMod .. " + CTRL + left", hl.dsp.window.resize({ x = -50, y = 0, relative = true }))
+hl.bind(mainMod .. " + CTRL + right", hl.dsp.window.resize({ x = 50, y = 0, relative = true }))
+hl.bind(mainMod .. " + CTRL + up", hl.dsp.window.resize({ x = 0, y = -50, relative = true }))
+hl.bind(mainMod .. " + CTRL + down", hl.dsp.window.resize({ x = 0, y = 50, relative = true }))
 
 -- Switch workspaces with mainMod + [0-9]
 -- Move active window to a workspace with mainMod + SHIFT + [0-9]
@@ -314,3 +313,19 @@ hl.window_rule({
 hl.window_rule({ match = { class = "^(nm-connection-editor)$" }, no_blur = true })
 hl.window_rule({ match = { class = "^(nm-connection-editor)$" }, opaque = true })
 hl.window_rule({ match = { class = "^(nm-connection-editor)$" }, no_shadow = true })
+hl.config({
+	windowrule = {
+		{
+			name = "nvim-float",
+			match = {
+				class = "kitty",
+				title = "nvim",
+			},
+			rules = {
+				"float",
+				"size 50% 90%",
+				"move 0 5%",
+			},
+		},
+	},
+})
