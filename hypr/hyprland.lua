@@ -43,6 +43,7 @@ local menu = "rofi -show drun"
 hl.on("hyprland.start", function()
 	hl.exec_cmd("waybar")
 	hl.exec_cmd("mako")
+	hl.exec_cmd("hypridle")
 	hl.exec_cmd("wl-paste --watch cliphist store")
 	hl.exec_cmd("bash ~/.config/hypr/wallpaper.sh")
 	hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
@@ -313,19 +314,3 @@ hl.window_rule({
 hl.window_rule({ match = { class = "^(nm-connection-editor)$" }, no_blur = true })
 hl.window_rule({ match = { class = "^(nm-connection-editor)$" }, opaque = true })
 hl.window_rule({ match = { class = "^(nm-connection-editor)$" }, no_shadow = true })
-hl.config({
-	windowrule = {
-		{
-			name = "nvim-float",
-			match = {
-				class = "kitty",
-				title = "nvim",
-			},
-			rules = {
-				"float",
-				"size 50% 90%",
-				"move 0 5%",
-			},
-		},
-	},
-})
