@@ -23,9 +23,13 @@
     "custom/sep",
     "wlr/taskbar",
     "custom/sep",
+    "pulseaudio",
+    "custom/sep",
     "network",
     "custom/sep",
     "bluetooth",
+    "custom/sep",
+    "backlight",
     "custom/sep",
     "battery",
     "custom/sep",
@@ -36,6 +40,25 @@
     "custom/restart",
     "custom/poweroff",
   ],
+
+  "group/hardware": {
+    "orientation": "horizontal",
+    "drawer": {
+      "transition-duration": 300,
+      "children-class": "hardware-drawer",
+      "transition-left-to-right": true,
+    },
+    "modules": ["battery", "backlight", "temperature"],
+  },
+
+  "backlight": {
+    "device": "amdgpu_bl1",
+    "format": "{icon} {percent}%",
+    "format-icons": ["󰃞", "󰃟", "󰃝", "󰃠"],
+    "on-scroll-up": "brightnessctl set 5%+",
+    "on-scroll-down": "brightnessctl set 5%-",
+    "tooltip-format": "Brightness: {percent}%",
+  },
 
   // ─── WORKSPACES ───────────────────────────────────────────────
   "hyprland/workspaces": {
@@ -133,7 +156,7 @@
   // ─── NETWORK ──────────────────────────────────────────────────
   "network": {
     "interval": 2,
-    "format-wifi": "󰖩  {essid}  󰁝{bandwidthUpBytes:>}  󰁅{bandwidthDownBytes:>}",
+    "format-wifi": "󰖩  {essid:.10}  󰁝{bandwidthUpBytes:>}  󰁅{bandwidthDownBytes:>}",
     "format-ethernet": "󰈀  {ifname}  󰁝{bandwidthUpBytes:>}  󰁅{bandwidthDownBytes:>}",
     "format-disconnected": "󰖪  No Network",
     "format-linked": "󰖩  {ifname} (No IP)",
@@ -142,7 +165,7 @@
     "tooltip-format-disconnected": "Disconnected",
     "on-click": "nm-connection-editor",
     "on-click-right": "kitty -e nmtui",
-    "max-length": 55,
+    "max-length": 30,
   },
 
   // ─── BLUETOOTH ────────────────────────────────────────────────
@@ -158,6 +181,19 @@
     "tooltip-format-enumerate-connected": "  {device_alias} ({device_address})",
     "on-click": "blueman-manager",
     "on-click-right": "rfkill toggle bluetooth",
+  },
+
+  // ─── PULSEAUDIO ───────────────────────────────────────────────
+  "pulseaudio": {
+    "format": "{icon}  {volume}%",
+    "format-muted": "󰝟  Muted",
+    "format-icons": {
+      "default": ["󰕿", "󰖀", "󰕾"],
+    },
+    "on-click": "pavucontrol",
+    "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+    "scroll-step": 5,
+    "tooltip-format": "Volume: {volume}%",
   },
 
   // ─── BATTERY ──────────────────────────────────────────────────
