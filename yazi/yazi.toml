@@ -30,22 +30,22 @@ enabled = false
 
 [opener]
 edit = [
-  { run = 'kitty --start-as=fullscreen nvim "$@"', orphan = true, desc = "nvim" },
+  { run = 'kitty --start-as=fullscreen nvim %s', orphan = true, desc = "nvim" },
 ]
 view_pdf = [
-  { run = 'zathura "$@"', orphan = true, desc = "zathura" },
+  { run = 'zathura %s', orphan = true, desc = "zathura" },
 ]
 view_image = [
-  { run = 'imv -f "$@"', orphan = true, desc = "imv" },
+  { run = 'imv -f %s', orphan = true, desc = "imv" },
 ]
 view_video = [
-  { run = 'mpv --fs "$@"', orphan = true, desc = "mpv" },
+  { run = 'mpv --fs %s', orphan = true, desc = "mpv" },
 ]
 extract = [
-  { run = '/home/xstream/.config/yazi/extract.sh "$@"', orphan = false, desc = "unzip" },
+  { run = '/home/xstream/.config/yazi/extract.sh %s', orphan = false, desc = "unzip" },
 ]
 office = [
-  { run = 'libreoffice "$@"', orphan = true, desc = "LibreOffice" },
+  { run = 'libreoffice %s', orphan = true, desc = "LibreOffice" },
 ]
 
 [open]
